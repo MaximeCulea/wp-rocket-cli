@@ -1,5 +1,5 @@
 {
-    "name": "AbdallahDeeb/wp-rocket-cli",
+    "name": "abdallahdeeb/wp-rocket-cli",
     "type": "wp-cli-package",
     "description": "Add a `wp rocket` command to support the WP Rocket plugin",
     "keywords": ["wp-cli", "rocket", "cache"],
