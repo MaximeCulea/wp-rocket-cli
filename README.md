@@ -10,16 +10,21 @@ Currently supported commands:
 * `wp rocket clean --confirm` -- Purge cache files without prompting for confirmation (usefull for automation tools/scripts)
 * `wp rocket preload` -- Preload cache files.
 * `wp rocket regenerate --file=<file>` -- Regenerate .htaccess, advanced-cache.php or the WP Rocket config file.
+* `wp rocket load_settings --file=<file>` -- Load settings file.
     
 ## Installing
 
 If you're using WP-CLI v0.23.0 or later, you can install this package with:
 
 ```
-wp package install geekpress/wp-rocket-cli
+wp package install abdallahdeeb/wp-rocket-cli
 ```
 
 ## Changelog
+
+### 1.1.AD
+
+* Add `load_settings` command. 
 
 ### 1.1
 
