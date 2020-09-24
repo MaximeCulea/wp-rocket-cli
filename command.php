@@ -354,6 +354,9 @@ class WPRocket_CLI extends WP_CLI_Command
 		 * 
 		 * ## OPTIONS
 		 * 
+         * <import|export>
+         * : Import or Export settings from/to file
+         * 
 		 * [--file=<file>]
 		 * : The settings file to load
 		 * 
@@ -361,50 +364,49 @@ class WPRocket_CLI extends WP_CLI_Command
 		 * 
 		 * 		wp rocket load_settings --file=settings-23042.json
 		 * 
-		 * @subcommand load_settings
+		 * @subcommand settings
      */
-    public function load_settings($args = array() , $assoc_args = array())
+    public function settings($args = array() , $assoc_args = array())
     {
-        if (!empty($assoc_args['file']))
-        {
-            $settings = rocket_direct_filesystem()->get_contents($assoc_args['file']);
-            if ('text/plain' === $file_data['type'])
+        if ( $args[0] == 'import') {
+            if (!empty($assoc_args['file']))
             {
-                $gz = 'gz' . strrev('etalfni');
-                $settings = $gz($settings);
-                $settings = maybe_unserialize($settings);
-            }
-            elseif ('application/json' === $file_data['type'])
-            {
+                $settings = file_get_contents($assoc_args['file']);
                 $settings = json_decode($settings, true);
 
                 if (null === $settings)
                 {
                     WP_CLI::error('Settings import failed: unexpected file content.');
                 }
+                
+                if (is_array($settings))
+                {
+                    $options_api = new WP_Rocket\Admin\Options('wp_rocket_');
+                    $current_options = $options_api->get('settings', []);
+
+                    $settings['consumer_key'] = $current_options['consumer_key'];
+                    $settings['consumer_email'] = $current_options['consumer_email'];
+                    $settings['secret_key'] = $current_options['secret_key'];
+                    $settings['secret_cache_key'] = $current_options['secret_cache_key'];
+                    $settings['minify_css_key'] = $current_options['minify_css_key'];
+                    $settings['minify_js_key'] = $current_options['minify_js_key'];
+                    $settings['version'] = $current_options['version'];
+
+                    $options_api->set('settings', $settings);
+
+                    WP_CLI::success('Settings imported and saved.');
+                }
             }
-            if (is_array($settings))
+            else
             {
-                $options_api = new WP_Rocket\Admin\Options('wp_rocket_');
-                $current_options = $options_api->get('settings', []);
-
-                $settings['consumer_key'] = $current_options['consumer_key'];
-                $settings['consumer_email'] = $current_options['consumer_email'];
-                $settings['secret_key'] = $current_options['secret_key'];
-                $settings['secret_cache_key'] = $current_options['secret_cache_key'];
-                $settings['minify_css_key'] = $current_options['minify_css_key'];
-                $settings['minify_js_key'] = $current_options['minify_js_key'];
-                $settings['version'] = $current_options['version'];
-
-                $options_api->set('settings', $settings);
-
-                WP_CLI::success('Settings imported and saved.');
+                WP_CLI::error('You didn\'t specify the "file" argument.');
             }
+        } elseif ( $args[0] == 'export' ) {
+            WP_CLI::error('Not implemented...');
+        } else {
+            WP_CLI::error('You didn\'t specify the "file" argument.');
         }
-        else
-        {
-            WP_CLI::error('You don\'t specify the "file" argument.');
-        }
+        
 
     }
 }
