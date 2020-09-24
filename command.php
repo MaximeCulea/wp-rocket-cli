@@ -350,21 +350,21 @@ class WPRocket_CLI extends WP_CLI_Command
     }
 
     /**
-     * Load settings
-		 * 
-		 * ## OPTIONS
-		 * 
-         * <import|export>
-         * : Import or Export settings from/to file
-         * 
-		 * [--file=<file>]
-		 * : The settings file to load
-		 * 
-		 * ## EXAMPLES
-		 * 
-		 * 		wp rocket load_settings --file=settings-23042.json
-		 * 
-		 * @subcommand settings
+     * settings
+     * 
+     * ## OPTIONS
+     * 
+     * <import|export>
+     * : Import or Export settings from/to file
+     * 
+     * [--file=<file>]
+     * : The settings file to load
+     * 
+     * ## EXAMPLES
+     * 
+     * 		wp rocket load_settings --file=settings-23042.json
+     * 
+     * @subcommand settings
      */
     public function settings($args = array() , $assoc_args = array())
     {
